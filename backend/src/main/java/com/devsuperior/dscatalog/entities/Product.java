@@ -46,6 +46,7 @@ public class Product implements Serializable {
         this.categories = categories;
     }
 
+
     public Long getId() {
         return id;
     }
