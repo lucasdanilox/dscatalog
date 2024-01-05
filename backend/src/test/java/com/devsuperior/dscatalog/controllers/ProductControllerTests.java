@@ -5,17 +5,20 @@ import com.devsuperior.dscatalog.services.ProductService;
 import com.devsuperior.dscatalog.tests.Factory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
 public class ProductControllerTests {
@@ -43,7 +46,13 @@ public class ProductControllerTests {
 
     @Test
     public void findAllShouldReturnPage() throws Exception {
-        when(service.findAllPaged(ArgumentMatchers.any())).thenReturn(page);
+
+            ResultActions result = mockMvc.perform(get("/products")
+                    .accept(MediaType.APPLICATION_JSON));
+
+        System.out.println("Response Content: " + result.andReturn().getResponse().getContentAsString());
+        result.andExpect(status().isOk());
+
     }
 
 }
