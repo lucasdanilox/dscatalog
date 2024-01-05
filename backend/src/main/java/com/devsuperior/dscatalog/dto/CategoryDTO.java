@@ -2,9 +2,7 @@ package com.devsuperior.dscatalog.dto;
 
 import com.devsuperior.dscatalog.entities.Category;
 
-import java.io.Serializable;
-
-public class CategoryDTO implements Serializable {
+public class CategoryDTO{
 
     private Long id;
     private String name;
@@ -37,4 +35,6 @@ public class CategoryDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+
 }

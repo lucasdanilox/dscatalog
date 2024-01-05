@@ -53,7 +53,6 @@ public class ProductServiceTests {
         nonExistingId = -1L;
         product = Factory.createProduct();
         productDTO = Factory.createProductDTO();
-        category = Factory.createCategory();
         page = new PageImpl<>(List.of(product));
 
 
