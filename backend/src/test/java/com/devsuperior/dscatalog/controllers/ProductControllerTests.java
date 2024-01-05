@@ -19,6 +19,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
@@ -68,12 +69,21 @@ public class ProductControllerTests {
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk());
-
+        result.andExpect(jsonPath("$.id").exists());
+        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.description").exists());
 
     }
 
     @Test
-    public void findByIdShouldReturnNotFoundProductWhenIdNotDoesExists() {
+    public void findByIdShouldReturnNotFoundProductWhenIdNotDoesExists() throws Exception {
+
+        ResultActions result =
+                mockMvc.perform(get("/products/{id}", nonExistingId)
+                        .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isNotFound());
+
 
     }
 
