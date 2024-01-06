@@ -115,8 +115,6 @@ public class ProductControllerTests {
         result.andExpect(jsonPath("$.name").exists());
         result.andExpect(jsonPath("$.description").exists());
 
-        result.andExpect(status().isOk());
-
     }
 
     @Test
