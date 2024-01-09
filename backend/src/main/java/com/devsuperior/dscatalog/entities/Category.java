@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_category")
-public class Category{
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,10 +75,6 @@ public class Category{
 
     public Set<Product> getProducts() {
         return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
     }
 
     @Override
