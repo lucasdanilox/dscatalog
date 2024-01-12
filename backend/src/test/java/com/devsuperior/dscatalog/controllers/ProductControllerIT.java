@@ -2,8 +2,10 @@ package com.devsuperior.dscatalog.controllers;
 
 import com.devsuperior.dscatalog.dto.ProductDTO;
 import com.devsuperior.dscatalog.tests.Factory;
+import com.devsuperior.dscatalog.tests.TokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +29,15 @@ public class ProductControllerIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
+    private TokenUtil tokenUtil;
+
+    @Autowired
     private ObjectMapper objectMapper;
     private Long existingId;
     private Long nonExistingid;
     private Long countTotalProducts;
+
+    private String username, password, bearerToken;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -41,6 +48,11 @@ public class ProductControllerIT {
 
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+
+        username = "maria@gmail.com";
+        password = "123456";
+
+        bearerToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
     }
 
     @Test
@@ -74,6 +86,7 @@ public class ProductControllerIT {
 
         ResultActions result =
                 mockMvc.perform(put("/products/{id}", existingId)
+                        .header("Authorization", "Bearer " + bearerToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -94,6 +107,7 @@ public class ProductControllerIT {
 
         ResultActions result =
                 mockMvc.perform(put("/products/{id}", nonExistingid)
+                        .header("Authorization", "Bearer " + bearerToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
