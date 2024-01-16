@@ -22,7 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE  (:categoryIds IS NULL OR tb_product_category.category_id IN :categoryIds)
             AND LOWER(tb_product.name) LIKE LOWER(CONCAT('%',:name, '%'))
             ORDER BY tb_product.name""", countQuery = """
-            
+                        
             SELECT COUNT(*) FROM (           
             SELECT DISTINCT tb_product.id, tb_product.name
             FROM tb_product
@@ -34,4 +34,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         
             """)
     Page<ProductProjetion> searchProducts(List<Long> categoryIds, String name, Pageable pageable);
+
+    @Query("SELECT obj FROM Product obj JOIN FETCH obj.categories WHERE obj.id IN :productIds ORDER BY obj.name")
+    List<Product> searchProductWithCategories(List<Long> productIds);
 }
