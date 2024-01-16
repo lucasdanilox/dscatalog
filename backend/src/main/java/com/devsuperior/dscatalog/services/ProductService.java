@@ -93,6 +93,7 @@ public class ProductService {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAllPaged(String name, String categoryId, Pageable pageable) {
 
@@ -105,7 +106,7 @@ public class ProductService {
 
         List<Product> entities = repository.searchProductWithCategories(productIds);
 
-        entities = Utils.replace(page.getContent(), entities);
+        entities = (List<Product>) Utils.replace(page.getContent(), entities);
         List<ProductDTO> dtos = entities.stream().map(p -> new ProductDTO(p, p.getCategories())).toList();
 
         return new PageImpl<>(dtos, page.getPageable(), page.getTotalElements());
